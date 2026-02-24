@@ -1,34 +1,74 @@
-import { useState, useEffect } from 'react';
-import { QrCode } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import About from './pages/About';
+import Header from './components/Header';
+import QRForm from './components/QRForm';
+import QRPreview from './components/QRPreview';
+import QRHistoryPanel from './components/QRHistoryPanel';
+import KeyboardShortcutsHelp from './components/KeyboardShortcutsHelp';
+import { useDarkMode } from './hooks/useDarkMode';
+import { useQRData } from './hooks/useQRData';
+import { useQRHistory } from './hooks/useQRHistory';
+import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 
-function ComingSoon() {
+function QRApp() {
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const { type, data, style, qrString, changeType, updateField, updateStyle, reset, loadEntry } = useQRData();
+  const history = useQRHistory();
+  const [showShortcuts, setShowShortcuts] = useState(false);
+
+  const toggleShortcuts = useCallback(() => setShowShortcuts(prev => !prev), []);
+
+  useKeyboardShortcuts({
+    onSave: () => history.save(type, data, style),
+    onToggleDarkMode: toggleDarkMode,
+    onToggleHistory: history.toggle,
+    onReset: reset,
+    onShowShortcuts: toggleShortcuts,
+  });
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col">
-      <main className="flex-1 flex items-center justify-center px-6">
-        <div className="text-center max-w-lg">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-emerald-100 dark:bg-emerald-900/30 rounded-2xl mb-8">
-            <QrCode className="w-10 h-10 text-emerald-600 dark:text-emerald-400" />
+      <Header
+        isDarkMode={isDarkMode}
+        toggleDarkMode={toggleDarkMode}
+        onShowShortcuts={toggleShortcuts}
+        onHistoryToggle={history.toggle}
+        historyCount={history.items.length}
+      />
+
+      <main className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-6">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Form */}
+          <div className="flex-1 min-w-0">
+            <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 sm:p-6">
+              <QRForm
+                type={type}
+                data={data}
+                style={style}
+                changeType={changeType}
+                updateField={updateField}
+                updateStyle={updateStyle}
+                onSave={() => history.save(type, data, style)}
+                onReset={reset}
+              />
+            </div>
           </div>
-          <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">
-            Free QR Code Tools
-          </h1>
-          <p className="text-lg text-slate-600 dark:text-slate-300 mb-2">
-            Generate QR codes instantly. Custom colors, logos, download as PNG or SVG.
-          </p>
-          <p className="text-slate-500 dark:text-slate-400 mb-8">
-            No signup. No "premium colors for $3.99/month." It's a QR code, not a luxury good.
-          </p>
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 rounded-full text-sm font-medium">
-            Coming Soon
+
+          {/* Preview - sticky on desktop */}
+          <div className="lg:w-[360px] shrink-0">
+            <div className="lg:sticky lg:top-20">
+              <div className="bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 sm:p-6">
+                <QRPreview qrString={qrString} style={style} />
+              </div>
+            </div>
           </div>
         </div>
       </main>
 
       <footer className="border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-        <div className="max-w-4xl mx-auto px-6 py-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-slate-500 dark:text-slate-400">
             <p>
               Made by{' '}
@@ -51,6 +91,17 @@ function ComingSoon() {
           </div>
         </div>
       </footer>
+
+      <QRHistoryPanel
+        isOpen={history.isOpen}
+        items={history.items}
+        onClose={history.toggle}
+        onLoad={loadEntry}
+        onRemove={history.remove}
+        onClearAll={history.clearAll}
+      />
+
+      <KeyboardShortcutsHelp isOpen={showShortcuts} onClose={toggleShortcuts} />
     </div>
   );
 }
@@ -67,7 +118,7 @@ function App() {
   if (path === '/privacy') return <Privacy />;
   if (path === '/terms') return <Terms />;
   if (path === '/about') return <About />;
-  return <ComingSoon />;
+  return <QRApp />;
 }
 
 export default App;
