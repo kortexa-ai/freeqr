@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Save, RotateCcw } from 'lucide-react';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import About from './pages/About';
@@ -39,6 +40,24 @@ function QRApp() {
       />
 
       <main className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-6">
+        {/* Actions bar */}
+        <div className="flex items-center mb-4">
+          <button
+            onClick={reset}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-medium transition-colors"
+          >
+            <RotateCcw className="w-4 h-4" />
+            Reset
+          </button>
+          <button
+            onClick={() => history.save(type, data, style)}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition-colors ml-auto"
+          >
+            <Save className="w-4 h-4" />
+            Save
+          </button>
+        </div>
+
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Form */}
           <div className="flex-1 min-w-0">
@@ -50,8 +69,6 @@ function QRApp() {
                 changeType={changeType}
                 updateField={updateField}
                 updateStyle={updateStyle}
-                onSave={() => history.save(type, data, style)}
-                onReset={reset}
               />
             </div>
           </div>

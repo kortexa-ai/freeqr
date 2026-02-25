@@ -1,7 +1,6 @@
 import { QR_TYPES, DOT_STYLES, SIZES, ERROR_CORRECTION_LEVELS, QR_VERSIONS } from '../utils/formatters';
 import {
   Type, Link, Contact, Wifi, Mail, Phone, MessageSquare, MapPin,
-  Save, RotateCcw,
 } from 'lucide-react';
 
 const ICONS = { Type, Link, Contact, Wifi, Mail, Phone, MessageSquare, MapPin };
@@ -159,7 +158,7 @@ const FIELD_COMPONENTS = {
   location: LocationFields,
 };
 
-export default function QRForm({ type, data, style, changeType, updateField, updateStyle, onSave, onReset }) {
+export default function QRForm({ type, data, style, changeType, updateField, updateStyle }) {
   const FieldComponent = FIELD_COMPONENTS[type];
 
   return (
@@ -314,23 +313,6 @@ export default function QRForm({ type, data, style, changeType, updateField, upd
         </div>
       </div>
 
-      {/* Actions */}
-      <div className="flex gap-3 border-t border-slate-200 dark:border-slate-700 pt-5">
-        <button
-          onClick={onSave}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition-colors"
-        >
-          <Save className="w-4 h-4" />
-          Save
-        </button>
-        <button
-          onClick={onReset}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-medium transition-colors"
-        >
-          <RotateCcw className="w-4 h-4" />
-          Reset
-        </button>
-      </div>
     </div>
   );
 }
