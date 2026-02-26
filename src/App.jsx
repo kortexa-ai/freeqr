@@ -3,6 +3,7 @@ import { Save, RotateCcw } from 'lucide-react';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import About from './pages/About';
+import FreeTools from './pages/FreeTools';
 import Header from './components/Header';
 import QRForm from './components/QRForm';
 import QRPreview from './components/QRPreview';
@@ -135,6 +136,7 @@ function App() {
   if (path === '/privacy') return <Privacy />;
   if (path === '/terms') return <Terms />;
   if (path === '/about') return <About />;
+  if (path === '/freetools') return <FreeTools />;
   return <QRApp />;
 }
 
