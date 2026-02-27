@@ -1,5 +1,5 @@
-import { useState, useMemo, useCallback } from 'react';
-import { DEFAULT_DATA, DEFAULT_STYLE, formatQRString } from '../utils/formatters';
+import { useState, useMemo, useCallback, useEffect } from 'react';
+import { DEFAULT_DATA, DEFAULT_STYLE, QR_TYPES, formatQRString } from '../utils/formatters';
 
 /**
  * Manages QR form state: type, data fields, style options, and computed qrString
@@ -8,6 +8,35 @@ export function useQRData() {
   const [type, setType] = useState('url');
   const [dataFields, setDataFields] = useState(() => structuredClone(DEFAULT_DATA));
   const [style, setStyle] = useState({ ...DEFAULT_STYLE });
+
+  // Read deep link params from URL on mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.size === 0) return;
+
+    const linkType = params.get('type');
+    const validTypeIds = QR_TYPES.map(t => t.id);
+    const resolvedType = linkType && validTypeIds.includes(linkType) ? linkType : 'url';
+
+    // Build fields from remaining params, only for keys that exist in DEFAULT_DATA for this type
+    const typeDefaults = DEFAULT_DATA[resolvedType];
+    const fields = {};
+    for (const key of Object.keys(typeDefaults)) {
+      const val = params.get(key);
+      if (val != null) fields[key] = val;
+    }
+
+    if (Object.keys(fields).length > 0) {
+      setType(resolvedType);
+      setDataFields(prev => ({
+        ...prev,
+        [resolvedType]: { ...prev[resolvedType], ...fields },
+      }));
+    }
+
+    // Clean the URL
+    window.history.replaceState({}, '', window.location.pathname);
+  }, []);
 
   // Current type's data
   const data = dataFields[type];

@@ -1,5 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Save, RotateCcw } from 'lucide-react';
+import { Save, RotateCcw, ExternalLink } from 'lucide-react';
+
+const toolUrl = (domain) => {
+  if (window.location.hostname !== 'localhost') return `https://${domain}`;
+  const ports = { 'freebusinesscards.xyz': 8101 };
+  return ports[domain] ? `https://localhost:${ports[domain]}` : `https://${domain}`;
+};
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import About from './pages/About';
@@ -50,9 +56,27 @@ function QRApp() {
             <RotateCcw className="w-4 h-4" />
             Reset
           </button>
+          {type === 'contact' && (data.firstName || data.lastName || data.email || data.phone) && (() => {
+            const fields = { firstName: data.firstName, lastName: data.lastName, email: data.email, phone: data.phone };
+            const qs = Object.entries(fields)
+              .filter(([, v]) => v)
+              .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
+              .join('&');
+            return qs ? (
+              <a
+                href={`${toolUrl('freebusinesscards.xyz')}/?${qs}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-medium transition-colors ml-auto"
+              >
+                <ExternalLink className="w-4 h-4" />
+                Make Business Card
+              </a>
+            ) : null;
+          })()}
           <button
             onClick={() => history.save(type, data, style)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition-colors ml-auto"
+            className={`inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition-colors${type === 'contact' && (data.firstName || data.lastName || data.email || data.phone) ? ' ml-2' : ' ml-auto'}`}
           >
             <Save className="w-4 h-4" />
             Save
