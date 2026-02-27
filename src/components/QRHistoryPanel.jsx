@@ -66,7 +66,7 @@ export default function QRHistoryPanel({ isOpen, items, onClose, onLoad, onRemov
                   {item.label}
                 </div>
                 <div className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
-                  {new Date(item.createdAt).toLocaleDateString()}
+                  {new Date(item.createdAt).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                 </div>
               </div>
               <button

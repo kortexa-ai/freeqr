@@ -148,6 +148,18 @@ function QRApp() {
   );
 }
 
+function NotFound() {
+  return (
+    <div className="min-h-[60vh] flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-6xl font-bold text-slate-200 dark:text-slate-700">404</h1>
+        <p className="mt-2 text-slate-500 dark:text-slate-400">Page not found</p>
+        <a href="/" className="mt-4 inline-block text-blue-600 dark:text-blue-400 hover:underline">Go home</a>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const [path, setPath] = useState(window.location.pathname);
 
@@ -161,6 +173,7 @@ function App() {
   if (path === '/terms') return <Terms />;
   if (path === '/about') return <About />;
   if (path === '/freetools') return <FreeTools />;
+  if (path !== '/') return <NotFound />;
   return <QRApp />;
 }
 
