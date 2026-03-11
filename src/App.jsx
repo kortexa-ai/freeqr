@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Save, RotateCcw, ExternalLink } from 'lucide-react';
+import ReceiveBanner from './components/ReceiveBanner';
+import { setupReceiver } from './utils/crossSiteTransfer';
 
 const toolUrl = (domain) => {
   if (window.location.hostname !== 'localhost') return `https://${domain}`;
@@ -36,6 +38,8 @@ function QRApp() {
     onShowShortcuts: toggleShortcuts,
   });
 
+  useEffect(() => { setupReceiver(); }, []);
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col">
       <Header
@@ -45,6 +49,7 @@ function QRApp() {
         onHistoryToggle={history.toggle}
         historyCount={history.items.length}
       />
+      <ReceiveBanner />
 
       <main className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-6">
         {/* Actions bar */}

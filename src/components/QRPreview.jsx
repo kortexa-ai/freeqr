@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import QRCodeStyling from 'qr-code-styling';
 import { Download } from 'lucide-react';
+import SendToMenu from './SendToMenu';
 
 // Singleton instance - reuse and update rather than recreate
 let qrInstance = null;
@@ -47,6 +48,14 @@ export default function QRPreview({ qrString, style }) {
     getQR(options);
   }, [qrString, style.dotStyle, style.fgColor, style.bgColor, style.size, style.errorCorrection, style.qrVersion]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Generate a File on demand for SendToMenu
+  const getFile = async () => {
+    const qr = getQR(options);
+    const blob = await qr.getRawData('png');
+    if (!blob) return null;
+    return new File([blob], 'qrcode.png', { type: 'image/png' });
+  };
+
   const handleDownload = (ext) => {
     const qr = getQR(options);
     qr.download({ extension: ext });
@@ -84,6 +93,7 @@ export default function QRPreview({ qrString, style }) {
           <Download className="w-4 h-4" />
           SVG
         </button>
+        {qrString && <SendToMenu getFile={getFile} fileType="image" />}
       </div>
     </div>
   );
