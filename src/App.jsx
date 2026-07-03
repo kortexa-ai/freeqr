@@ -14,6 +14,7 @@ import FreeTools from './pages/FreeTools';
 import QRForm from './components/QRForm';
 import QRPreview from './components/QRPreview';
 import QRHistoryPanel from './components/QRHistoryPanel';
+import ToolInfo from './components/ToolInfo';
 import KeyboardShortcutsHelp from './components/KeyboardShortcutsHelp';
 import { useDarkMode } from './hooks/useDarkMode';
 import { useQRData } from './hooks/useQRData';
@@ -104,6 +105,8 @@ function QRApp() {
             </div>
           </div>
         </div>
+
+        <ToolInfo />
       </div>
 
       <QRHistoryPanel

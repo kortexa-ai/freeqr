@@ -23,12 +23,15 @@ export default function QRPreview({ qrString, style }) {
     width: style.size,
     height: style.size,
     data: qrString || ' ',
+    image: style.logo || undefined,
+    imageOptions: { margin: 4, imageSize: 0.35, hideBackgroundDots: true, crossOrigin: 'anonymous' },
     dotsOptions: { type: style.dotStyle, color: style.fgColor },
     backgroundOptions: { color: style.bgColor },
     cornersSquareOptions: { color: style.fgColor },
     cornersDotOptions: { color: style.fgColor },
     qrOptions: {
-      errorCorrectionLevel: style.errorCorrection || 'M',
+      // A logo covers part of the code, so force H while one is set
+      errorCorrectionLevel: style.logo ? 'H' : (style.errorCorrection || 'M'),
       typeNumber: style.qrVersion || 0,
     },
   };
@@ -46,7 +49,7 @@ export default function QRPreview({ qrString, style }) {
   useEffect(() => {
     if (!mountedRef.current) return;
     getQR(options);
-  }, [qrString, style.dotStyle, style.fgColor, style.bgColor, style.size, style.errorCorrection, style.qrVersion]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [qrString, style.dotStyle, style.fgColor, style.bgColor, style.size, style.errorCorrection, style.qrVersion, style.logo]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Generate a File on demand for SendToMenu
   const getFile = async () => {

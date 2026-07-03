@@ -66,6 +66,7 @@ export const DEFAULT_STYLE = {
   size: 512,
   errorCorrection: 'M',
   qrVersion: 0,
+  logo: null, // data URL of center image
 };
 
 /** Escape special chars for WiFi/vCard strings */
