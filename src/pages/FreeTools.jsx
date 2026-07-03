@@ -23,7 +23,7 @@ export default function FreeTools() {
       <div className="max-w-2xl mx-auto px-6 py-12">
         <a
           href="/"
-          className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mb-8"
+          className="inline-flex items-center text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 mb-8"
         >
           &larr; Back
         </a>

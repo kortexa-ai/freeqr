@@ -70,7 +70,7 @@ export const DEFAULT_STYLE = {
 
 /** Escape special chars for WiFi/vCard strings */
 function escWifi(str) {
-  return str.replace(/([\\;,":])/, '\\$1');
+  return str.replace(/([\\;,":])/g, '\\$1');
 }
 
 /** Format data fields into a QR-encodable string */
@@ -161,7 +161,7 @@ export function deriveLabel(type, data) {
     case 'sms':
       return data.phone || 'Empty SMS';
     case 'location':
-      return data.label || `${data.lat}, ${data.lng}` || 'Empty location';
+      return data.label || (data.lat && data.lng ? `${data.lat}, ${data.lng}` : 'Empty location');
     default:
       return 'QR Code';
   }

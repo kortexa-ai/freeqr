@@ -18,6 +18,7 @@ export default function QRHistoryPanel({ isOpen, items, onClose, onLoad, onRemov
 
       {/* Panel */}
       <div
+        inert={!isOpen}
         className={`fixed top-0 right-0 h-full w-80 max-w-[90vw] z-50 bg-white dark:bg-slate-800 shadow-2xl transform transition-transform duration-200 ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
@@ -38,6 +39,7 @@ export default function QRHistoryPanel({ isOpen, items, onClose, onLoad, onRemov
             )}
             <button
               onClick={onClose}
+              aria-label="Close history"
               className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400"
             >
               <X className="w-5 h-5" />
@@ -71,6 +73,7 @@ export default function QRHistoryPanel({ isOpen, items, onClose, onLoad, onRemov
               </div>
               <button
                 onClick={(e) => { e.stopPropagation(); onRemove(item.id); }}
+                aria-label="Delete entry"
                 className="p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-red-50 dark:hover:bg-red-900/30 text-slate-400 hover:text-red-500 transition-all"
               >
                 <Trash2 className="w-4 h-4" />

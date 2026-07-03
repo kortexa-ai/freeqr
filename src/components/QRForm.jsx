@@ -7,8 +7,8 @@ const ICONS = { Type, Link, Contact, Wifi, Mail, Phone, MessageSquare, MapPin };
 
 function Input({ label, type = 'text', value, onChange, placeholder, ...rest }) {
   return (
-    <div>
-      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{label}</label>
+    <label className="block">
+      <span className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{label}</span>
       <input
         type={type}
         value={value}
@@ -17,14 +17,14 @@ function Input({ label, type = 'text', value, onChange, placeholder, ...rest }) 
         className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-colors"
         {...rest}
       />
-    </div>
+    </label>
   );
 }
 
 function Textarea({ label, value, onChange, placeholder, rows = 3 }) {
   return (
-    <div>
-      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{label}</label>
+    <label className="block">
+      <span className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{label}</span>
       <textarea
         value={value}
         onChange={e => onChange(e.target.value)}
@@ -32,14 +32,14 @@ function Textarea({ label, value, onChange, placeholder, rows = 3 }) {
         rows={rows}
         className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-colors resize-y"
       />
-    </div>
+    </label>
   );
 }
 
 function Select({ label, value, onChange, options }) {
   return (
-    <div>
-      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{label}</label>
+    <label className="block">
+      <span className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{label}</span>
       <select
         value={value}
         onChange={e => onChange(e.target.value)}
@@ -49,7 +49,7 @@ function Select({ label, value, onChange, options }) {
           <option key={o.value} value={o.value}>{o.label}</option>
         ))}
       </select>
-    </div>
+    </label>
   );
 }
 
@@ -266,9 +266,9 @@ export default function QRForm({ type, data, style, changeType, updateField, upd
 
         {/* Colors */}
         <div className="flex gap-4">
-          <div>
-            <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1.5">Foreground</label>
-            <div className="flex items-center gap-2">
+          <label className="block">
+            <span className="block text-xs text-slate-500 dark:text-slate-400 mb-1.5">Foreground</span>
+            <span className="flex items-center gap-2">
               <input
                 type="color"
                 value={style.fgColor}
@@ -276,11 +276,11 @@ export default function QRForm({ type, data, style, changeType, updateField, upd
                 className="w-8 h-8 rounded cursor-pointer border border-slate-300 dark:border-slate-600"
               />
               <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">{style.fgColor}</span>
-            </div>
-          </div>
-          <div>
-            <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1.5">Background</label>
-            <div className="flex items-center gap-2">
+            </span>
+          </label>
+          <label className="block">
+            <span className="block text-xs text-slate-500 dark:text-slate-400 mb-1.5">Background</span>
+            <span className="flex items-center gap-2">
               <input
                 type="color"
                 value={style.bgColor}
@@ -288,8 +288,8 @@ export default function QRForm({ type, data, style, changeType, updateField, upd
                 className="w-8 h-8 rounded cursor-pointer border border-slate-300 dark:border-slate-600"
               />
               <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">{style.bgColor}</span>
-            </div>
-          </div>
+            </span>
+          </label>
         </div>
 
         {/* Size */}

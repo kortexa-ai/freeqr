@@ -4,11 +4,10 @@ import { useEffect, useCallback } from 'react';
  * Custom hook for keyboard shortcuts
  * - Ctrl/Cmd + S: Save QR to history
  * - Ctrl/Cmd + D: Toggle dark mode
- * - Ctrl/Cmd + H: Toggle history panel
- * - Ctrl/Cmd + R: Reset form
+ * - Ctrl/Cmd + Shift + H: Toggle history panel (Cmd+H is OS-reserved on macOS)
  * - Ctrl/Cmd + /: Show keyboard shortcuts
  */
-export function useKeyboardShortcuts({ onSave, onToggleDarkMode, onToggleHistory, onReset, onShowShortcuts }) {
+export function useKeyboardShortcuts({ onSave, onToggleDarkMode, onToggleHistory, onShowShortcuts }) {
   const handleKeyDown = useCallback((e) => {
     const isCtrl = e.ctrlKey || e.metaKey;
 
@@ -24,12 +23,9 @@ export function useKeyboardShortcuts({ onSave, onToggleDarkMode, onToggleHistory
         onToggleDarkMode?.();
         break;
       case 'h':
+        if (!e.shiftKey) break;
         e.preventDefault();
         onToggleHistory?.();
-        break;
-      case 'r':
-        e.preventDefault();
-        onReset?.();
         break;
       case '/':
         e.preventDefault();
@@ -38,7 +34,7 @@ export function useKeyboardShortcuts({ onSave, onToggleDarkMode, onToggleHistory
       default:
         break;
     }
-  }, [onSave, onToggleDarkMode, onToggleHistory, onReset, onShowShortcuts]);
+  }, [onSave, onToggleDarkMode, onToggleHistory, onShowShortcuts]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);

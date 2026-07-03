@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Save, RotateCcw, ExternalLink } from 'lucide-react';
-import ReceiveBanner from './components/ReceiveBanner';
-import { setupReceiver } from './utils/crossSiteTransfer';
+import Layout from './components/Layout';
 
 const toolUrl = (domain) => {
   if (window.location.hostname !== 'localhost') return `https://${domain}`;
@@ -12,7 +11,6 @@ import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import About from './pages/About';
 import FreeTools from './pages/FreeTools';
-import Header from './components/Header';
 import QRForm from './components/QRForm';
 import QRPreview from './components/QRPreview';
 import QRHistoryPanel from './components/QRHistoryPanel';
@@ -34,24 +32,18 @@ function QRApp() {
     onSave: () => history.save(type, data, style),
     onToggleDarkMode: toggleDarkMode,
     onToggleHistory: history.toggle,
-    onReset: reset,
     onShowShortcuts: toggleShortcuts,
   });
 
-  useEffect(() => { setupReceiver(); }, []);
-
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col">
-      <Header
-        isDarkMode={isDarkMode}
-        toggleDarkMode={toggleDarkMode}
-        onShowShortcuts={toggleShortcuts}
-        onHistoryToggle={history.toggle}
-        historyCount={history.items.length}
-      />
-      <ReceiveBanner />
-
-      <main className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-6">
+    <Layout
+      isDarkMode={isDarkMode}
+      toggleDarkMode={toggleDarkMode}
+      onShowShortcuts={toggleShortcuts}
+      onHistoryToggle={history.toggle}
+      historyCount={history.items.length}
+    >
+      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-6">
         {/* Actions bar */}
         <div className="flex items-center mb-4">
           <button
@@ -112,32 +104,7 @@ function QRApp() {
             </div>
           </div>
         </div>
-      </main>
-
-      <footer className="border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-slate-500 dark:text-slate-400">
-            <p>
-              Made by{' '}
-              <a
-                href="https://kortexa.ai"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                kortexa.ai
-              </a>
-            </p>
-            <p className="flex items-center gap-2">
-              <a href="/about" className="hover:text-slate-700 dark:hover:text-slate-200">About</a>
-              <span>·</span>
-              <a href="/privacy" className="hover:text-slate-700 dark:hover:text-slate-200">Privacy</a>
-              <span>·</span>
-              <a href="/terms" className="hover:text-slate-700 dark:hover:text-slate-200">Terms</a>
-            </p>
-          </div>
-        </div>
-      </footer>
+      </div>
 
       <QRHistoryPanel
         isOpen={history.isOpen}
@@ -149,7 +116,7 @@ function QRApp() {
       />
 
       <KeyboardShortcutsHelp isOpen={showShortcuts} onClose={toggleShortcuts} />
-    </div>
+    </Layout>
   );
 }
 

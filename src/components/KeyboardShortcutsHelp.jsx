@@ -1,13 +1,20 @@
-import { X, Command, Save, Moon, History, RotateCcw, Keyboard } from 'lucide-react';
+import { useEffect } from 'react';
+import { X, Command, Save, Moon, History, Keyboard } from 'lucide-react';
 
 export default function KeyboardShortcutsHelp({ isOpen, onClose }) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const shortcuts = [
     { key: 'Ctrl + S', mac: '⌘ + S', icon: Save, description: 'Save QR to history' },
     { key: 'Ctrl + D', mac: '⌘ + D', icon: Moon, description: 'Toggle dark mode' },
-    { key: 'Ctrl + H', mac: '⌘ + H', icon: History, description: 'Toggle history panel' },
-    { key: 'Ctrl + R', mac: '⌘ + R', icon: RotateCcw, description: 'Reset form' },
+    { key: 'Ctrl + Shift + H', mac: '⌘ + ⇧ + H', icon: History, description: 'Toggle history panel' },
     { key: 'Ctrl + /', mac: '⌘ + /', icon: Keyboard, description: 'Show shortcuts' },
   ];
 
@@ -26,6 +33,7 @@ export default function KeyboardShortcutsHelp({ isOpen, onClose }) {
           </div>
           <button
             onClick={onClose}
+            aria-label="Close"
             className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
           >
             <X className="w-5 h-5" />

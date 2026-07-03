@@ -49,8 +49,8 @@ export default function Header({ isDarkMode, toggleDarkMode, onShowShortcuts, on
           <button
             onClick={onHistoryToggle}
             className="flex items-center gap-2 px-3 py-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
-            title="View history (Ctrl+H)"
-            aria-label="View history (Ctrl+H)"
+            title="View history (Ctrl+Shift+H)"
+            aria-label="View history (Ctrl+Shift+H)"
           >
             <History className="w-4 h-4" />
             <span className="hidden sm:inline text-sm font-medium">History</span>
